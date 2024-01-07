@@ -1,0 +1,7 @@
+- type: replace
+  path: /networks/name=outbound/cloud_properties/type?
+  value: bridged
+
+- type: replace
+  path: /networks/name=outbound/cloud_properties/name?
+  value: ((network_device))

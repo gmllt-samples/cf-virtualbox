@@ -1,0 +1,6 @@
+/deployments/bosh.yml
+/deployments/cf.yml
+/deployments/creds.yml
+/deployments/jumpbox.key
+/deployments/state.json
+/deployments/.envrc

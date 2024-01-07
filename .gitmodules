@@ -1,0 +1,6 @@
+[submodule "bosh/bosh-deployment"]
+	path = bosh/bosh-deployment
+	url = https://github.com/cloudfoundry/bosh-deployment.git
+[submodule "cf/cf-deployment"]
+	path = cf/cf-deployment
+	url = https://github.com/cloudfoundry/cf-deployment.git

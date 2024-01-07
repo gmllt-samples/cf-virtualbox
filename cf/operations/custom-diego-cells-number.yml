@@ -1,0 +1,4 @@
+---
+- path: /instance_groups/name=diego-cell/instances?
+  type: replace
+  value: 2

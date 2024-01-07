@@ -1,0 +1,13 @@
+---
+
+- path: /resource_pools/name=vms/cloud_properties/cpus?
+  type: replace
+  value: 8
+
+- path: /resource_pools/name=vms/cloud_properties/ephemeral_disk?
+  type: replace
+  value: 32768
+
+- path: /resource_pools/name=vms/cloud_properties/memory?
+  type: replace
+  value: 8192
