@@ -1,0 +1,8 @@
+---
+web_listen: :8080
+
+log:
+log_level: debug
+log_no_color: false
+log_json: false
+

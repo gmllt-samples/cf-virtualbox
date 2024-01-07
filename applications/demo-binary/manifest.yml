@@ -1,0 +1,9 @@
+---
+applications:
+  - name: demo-binary
+    buildpacks:
+      - binary_buildpack
+    command: ./simple-go --config config.yml
+    routes:
+      - route: demo-binary.bosh-lite.com
+      - route: demo-binary.apps.internal

@@ -1,0 +1,11 @@
+---
+applications:
+- name: demo-php
+  memory: 128M
+  buildpacks:
+  - php_buildpack
+  routes:
+    - route: demo-php.bosh-lite.com
+    - route: demo-php.apps.internal
+  env:
+    SOME_VAR: Wheee
