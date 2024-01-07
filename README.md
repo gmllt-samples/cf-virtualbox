@@ -6,6 +6,14 @@ This is a simple Bosh and Cloud Foundry deployment for Virtualbox 7.
 
 ## Requirements
 
+### System
+
+* Ubuntu 22.04
+* 16GB RAM
+* 8 CPUs
+
+you can modify the RAM and CPU in the `bosh/operations/vms-resources.yml` file.
+
 ### Git
 
 Make sure Git is installed on your system.
@@ -58,11 +66,12 @@ sudo apt-get install ~/Downloads/virtualbox-7.0_7.0.12-159484~Ubuntu~jammy_amd64
 To create the BOSH and Cloud Foundry deployment, run the following command:
 
 ```bash
-./scripts/create-env.sh
+$ ./scripts/create-env.sh
 ```
 
 This will :
 - deploy BOSH on Virtualbox using bridged network as outbond network.
+- deploy BOSH with custom password for vcap user `admin`.
 - deploy Cloud Foundry on BOSH with the system domain `bosh-lite.com`.
 - create a directory `deployments` containing:
   * `bosh.yml`: BOSH manifest
@@ -76,6 +85,14 @@ By default, the script will create a `hostonly` network as followed:
 - gateway: `192.168.56.1`
 - cidr: `192.168.56.0/24`
 - jumpbox ip: `192.168.56.6`
+
+You can change the vcap user's password in the `bosh/operations/custom-bosh-password.yml` file.
+```bash
+# use mkpasswd to generate a password hash
+mkpasswd -s -m sha-512
+Password: REDACTED
+$6$p95sDVpIlrzGf0kl$1KP37eS4Jj9nWM/IsS.BcBaMVUO4Arf.Zl8JDRTnpFzqK88h9WSY6qT/dwmr4urjNNKB/2poiuCD6DM7H47WR0
+```
 
 ## Stop and resume deployment
 
