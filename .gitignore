@@ -4,3 +4,4 @@
 /deployments/jumpbox.key
 /deployments/state.json
 /deployments/.envrc
+/backups/*

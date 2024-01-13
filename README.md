@@ -106,3 +106,68 @@ $6$p95sDVpIlrzGf0kl$1KP37eS4Jj9nWM/IsS.BcBaMVUO4Arf.Zl8JDRTnpFzqK88h9WSY6qT/dwmr
     ```bash
     ./scripts/bosh-vm.sh resume
     ```
+
+## Create an admin account
+
+### `cf-uaac` client installation
+```bash
+sudo gem install cf-uaac
+```
+
+### Add an account
+```bash
+source "./deployments/.envrc"
+credhub api --server api.bosh-lite.com --skip-tls-validation
+uaac target https://uaa.bosh-lite.com --skip-ssl-validation
+uaac token client get admin -s $(credhub get -n /bosh-lite/cf/uaa_admin_client_secret -q)
+uaac user add $ACCOUNT_NAME -p $ACCOUNT_PASSWORD --emails $ACCOUNT_EMAIL
+for group in cloud_controller.admin clients.read clients.secret clients.write uaa.admin scim.write scim.read; do
+  uaac member add $group $ACCOUNT_NAME
+done
+```
+
+# Demo applications
+
+The `applications` directory includes a few demo applications.
+
+## PHP
+
+This is a simple PHP application using `php_buildpack`.
+```bash
+# deploy
+cd applications/demo-php
+
+# connect to cloud foundry api
+cf login -a api.bosh-lite.com --skip-ssl-validation -u $ACCOUNT_NAME -p $ACCOUNT_PASSWORD
+cf target -o system
+# create space if not exists
+cf create-space demo
+cf target -s demo
+
+# push the application
+cf push
+
+# access through the route
+curl -k https://demo-php.bosh-lite.com/
+```
+
+## Binary
+
+This is a simple binary application using `binary_builpack`.
+```bash
+# deploy
+cd applications/demo-binary
+
+# connect to cloud foundry api
+cf login -a api.bosh-lite.com --skip-ssl-validation -u admin -p REDACTED
+cf target -o system
+# create space if not exists
+cf create-space demo
+cf target -s demo
+
+# push the application
+cf push
+
+# access through the route
+curl -k https://demo-binary.bosh-lite.com/
+```
