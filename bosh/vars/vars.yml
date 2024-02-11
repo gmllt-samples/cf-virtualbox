@@ -1,0 +1,13 @@
+---
+bosh_vm_cpus: 8
+bosh_vm_ephemeral_disk: 32768
+bosh_vm_memory: 8192
+director_name: "bosh-lite"
+internal_ip: "192.168.56.6"
+internal_gw: "192.168.56.1"
+internal_cidr: "192.168.56.0/24"
+outbound_network_name: "NatNetwork"
+network_device: "enp7s0"
+# mkpasswd -s -m sha-512
+# Password: admin
+bosh_vm_password: "$6$DKOtV4.3.irdEZat$IFk5BkTuERYA52u.ssnp8cuobGOYSfWRQ1Li5tmbCawG7yoVJYjtdgwCrNIhFiLVeh85s218kAnZG4EmvvXsp/"

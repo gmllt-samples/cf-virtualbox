@@ -2,12 +2,12 @@
 
 - path: /resource_pools/name=vms/cloud_properties/cpus?
   type: replace
-  value: 8
+  value: ((bosh_vm_cpus))
 
 - path: /resource_pools/name=vms/cloud_properties/ephemeral_disk?
   type: replace
-  value: 32768
+  value: ((bosh_vm_ephemeral_disk))
 
 - path: /resource_pools/name=vms/cloud_properties/memory?
   type: replace
-  value: 8192
+  value: ((bosh_vm_memory))
