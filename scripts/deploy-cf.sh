@@ -61,7 +61,8 @@ fi
 ####
 STEP "Creating CF deployment"
 ####
-bosh -ne vbox -d cf deploy "${deployments_dir}/cf.yml"
+bosh -ne vbox -d cf deploy "${deployments_dir}/cf.yml" \
+  --no-redact
 
 echo Succeeded
 
