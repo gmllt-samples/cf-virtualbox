@@ -59,7 +59,7 @@ Download the latest [`Virtualbox`](https://www.virtualbox.org/wiki/Linux_Downloa
 Don't forget to install the [extension pack](https://www.virtualbox.org/wiki/Downloads).
 
 ```bash
-sudo apt-get install ~/Downloads/virtualbox-7.0_7.0.12-159484~Ubuntu~jammy_amd64.deb
+sudo apt-get install virtualbox virtualbox-dkms virtualbox-ext-pack
 ```
 
 ## Create deployment
