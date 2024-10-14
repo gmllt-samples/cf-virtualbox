@@ -22,6 +22,14 @@ Make sure Git is installed on your system.
 sudo apt-get install git
 ```
 
+### jq
+
+Make sure jq is isntalled on your system.
+
+```bash
+sudo apt-get install jq
+```
+
 ### BOSH CLI
 
 Download the latest [`bosh-cli` release](https://github.com/cloudfoundry/bosh-cli/releases) and move it to you `$PATH`.
@@ -59,7 +67,38 @@ Download the latest [`Virtualbox`](https://www.virtualbox.org/wiki/Linux_Downloa
 Don't forget to install the [extension pack](https://www.virtualbox.org/wiki/Downloads).
 
 ```bash
-sudo apt-get install virtualbox virtualbox-dkms virtualbox-ext-pack
+sudo apt install virtualbox virtualbox-dkms virtualbox-ext-pack
+```
+
+### Ruby
+
+You can install ruby with [rbenv](https://github.com/rbenv/rbenv).
+
+```bash
+sudo apt install rbenv
+rbenv init
+
+rbenv install 3.1.6
+```
+
+### cf-uaac or uaa
+
+In order to use `./scripts/add-cf-admin.sh`, you need to install [`cf-uaac`](https://github.com/cloudfoundry/cf-uaac)
+or [`uaa-cli`](https://github.com/cloudfoundry/uaa-cli)
+
+#### cf-uaac
+
+```bash
+sudo gem install cf-uaac
+```
+
+#### uaa-cli
+
+Download the latest [`uaa-cli` release](https://github.com/cloudfoundry/uaa-cli/releases), extract and move it to your
+`$PATH`.
+
+```bash
+sudo install ~/Downloads/uaa-linux-amd64-0.14.0 /usr/local/bin/uaa
 ```
 
 ## Create deployment
@@ -165,22 +204,50 @@ This will :
 
 ## Create an admin account
 
-### `cf-uaac` client installation
+### Using [`cf-uaac`](https://github.com/cloudfoundry/cf-uaac)
+
+#### `cf-uaac` client installation
 
 ```bash
 sudo gem install cf-uaac
 ```
 
-### Add an account
+#### Add an account
 
 ```bash
 source "./deployments/.envrc"
 credhub api --server api.bosh-lite.com --skip-tls-validation
 uaac target https://uaa.bosh-lite.com --skip-ssl-validation
-uaac token client get admin -s $(credhub get -n /bosh-lite/cf/uaa_admin_client_secret -q)
-uaac user add $ACCOUNT_NAME -p $ACCOUNT_PASSWORD --emails $ACCOUNT_EMAIL
+uaac token client get admin -s "$(credhub g -n "/${bosh_deployment_name}/cf/uaa_admin_client_secret" --output-json | jq .value -r)"
+uaac user add "${ACCOUNT_NAME}" -p "${ACCOUNT_PASSWORD}" --emails "${ACCOUNT_EMAIL}"
 for group in cloud_controller.admin clients.read clients.secret clients.write uaa.admin scim.write scim.read; do
-  uaac member add $group $ACCOUNT_NAME
+  uaac member add "${group}" "${ACCOUNT_NAME}"
+done
+```
+
+You can use the `./scripts/add-cf-admin.sh <account_name> <account_email>` script to add an account.
+
+### Using [`uaa-cli`](https://github.com/cloudfoundry/uaa-cli)
+
+#### `uaa-cli` client installation
+
+Download the latest [`uaa-cli` release](https://github.com/cloudfoundry/uaa-cli/releases), extract and move it to your
+`$PATH`.
+
+```bash
+sudo install ~/Downloads/uaa-linux-amd64-0.14.0 /usr/local/bin/uaa
+```
+
+#### Add an account
+
+```bash
+source "./deployments/.envrc"
+credhub api --server api.bosh-lite.com --skip-tls-validation
+uaac target https://uaa.bosh-lite.com --skip-ssl-validation
+uaa get-client-credentials-token admin -s "$(credhub g -n "/${bosh_deployment_name}/cf/uaa_admin_client_secret" --output-json | jq .value -r)"
+uaa create-user "${ACCOUNT_NAME}" --email "${ACCOUNT_EMAIL}" --password "${ACCOUNT_PASSWORD}"
+for group in cloud_controller.admin clients.read clients.secret clients.write uaa.admin scim.write scim.read; do
+  uaa add-member "${group}" "${ACCOUNT_NAME}"
 done
 ```
 

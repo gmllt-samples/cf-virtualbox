@@ -4,3 +4,6 @@
 [submodule "cf/cf-deployment"]
 	path = cf/cf-deployment
 	url = https://github.com/cloudfoundry/cf-deployment.git
+[submodule "applications/samples"]
+	path = applications/samples
+	url = git@github.com:paketo-buildpacks/samples.git
