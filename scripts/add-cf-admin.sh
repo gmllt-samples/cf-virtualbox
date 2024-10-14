@@ -39,10 +39,13 @@ api_domain="api.${system_domain}"
 uaa_url="https://uaa.${system_domain}"
 credhub api --server "${api_domain}" --skip-tls-validation
 uaac target "${uaa_url}" --skip-ssl-validation
-uaac token client get admin -s "$(credhub g -n "/${bosh_deployment_name}/cf/uaa_admin_client_secret" --output-json | jq .value -r)"
-uaac user add "${account_name}" --emails "${account_email}" -p "${account_password}"
+#uaac token client get admin -s "$(credhub g -n "/${bosh_deployment_name}/cf/uaa_admin_client_secret" --output-json | jq .value -r)"
+uaac get-client-credentials-token admin -s "$(credhub g -n "/${bosh_deployment_name}/cf/uaa_admin_client_secret" --output-json | jq .value -r)"
+# uaac user add "${account_name}" --emails "${account_email}" -p "${account_password}"
+uaac create-user "${account_name}" --email "${account_email}" --password "${account_password}"
 for scope in cloud_controller.admin clients.read clients.secret clients.write uaa.admin scim.write scim.read; do
-  uaac member add "${scope}" "${account_name}"
+  # uaac member add "${scope}" "${account_name}"
+  uaac add-member "${scope}" "${account_name}"
 done
 
 echo Succeeded
